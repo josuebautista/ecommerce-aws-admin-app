@@ -1,3 +1,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+input, textarea{
+  @apply border-2 border-slate-400 rounded-lg px-2 py-1 w-full my-2;
+}
+
+label {
+  @apply text-xl
+}
+
+input:focus, textarea:focus{
+  @apply border-sky-500;
+}
+
+.btn-primary{
+  @apply bg-sky-700 text-white px-4 py-2 rounded-lg hover:bg-sky-500 transition hover:-translate-y-1 mt-5
+}
+
+table.basic {
+  @apply w-full;
+
+}
+
+table.basic thead tr td{
+  @apply bg-sky-100;
+}
+
+table.basic tr td {
+  @apply border border-sky-500 p-1;
+
+}
