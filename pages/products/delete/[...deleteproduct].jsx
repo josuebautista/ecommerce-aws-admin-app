@@ -18,6 +18,11 @@ const DeleteProduct = () => {
     })
   }, [deleteproduct])
 
+  const deleteProduct = async () => {
+    await axios.delete('/api/products?id=' + id);
+    goBack();
+  }
+
   const goBack = () => {
     router.push('/products');
   }
@@ -29,8 +34,7 @@ const DeleteProduct = () => {
           Do you really want to delete product {productInfo?.title}?
         </div>
         <div className='flex flex-row justify-around my-5'>
-
-          <button className='bg-slate-500 text-white px-6 py-2 rounded-xl hover:bg-slate-400'>
+          <button onClick={() => deleteProduct()} className='bg-slate-500 text-white px-6 py-2 rounded-xl hover:bg-slate-400'>
             Yes
           </button>
           <button onClick={() => goBack()} className='bg-sky-700 text-white px-6 py-2 rounded-xl hover:bg-sky-500'>

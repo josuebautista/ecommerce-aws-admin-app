@@ -3,6 +3,9 @@ import Layout from '@/components/Layout';
 import { useRouter } from 'next/router';
 import ProductForm from '@/components/ProductForm';
 import axios from 'axios';
+import Link from 'next/link';
+import { HiOutlineChevronLeft } from "react-icons/hi2";
+
 
 const EditProductPage = () => {
   const router = useRouter();
@@ -25,7 +28,12 @@ const EditProductPage = () => {
       {
         productInfo !== null && (
           <>
-            <div className='text-2xl py-3'>Edit Product</div>
+            <div className='flex justify-between '>
+              <div className='text-2xl py-3'>Edit Product</div>
+              <Link href={'/products'} className='bg-sky-700 px-3 m-2 flex rounded-lg text-white hover:bg-sky-500 transition duration-200'>
+                <HiOutlineChevronLeft size={25} className='mt-2' /> <span className='text-xl mt-1'>Back</span>
+              </Link>
+            </div>
             <ProductForm {...productInfo} />
           </>
         )

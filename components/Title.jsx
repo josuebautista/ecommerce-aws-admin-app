@@ -10,7 +10,7 @@ const Title = ({ children }) => {
       </div>
       <div className='flex'>
         <img src={session?.user.image} className='rounded-full' width={40} height={40} alt='logo-icon' />
-        <span className='pt-2 pl-2' >
+        <span className='pt-2 pl-2 sm:hidden' >
           {session?.user.name}
         </span>
       </div>
