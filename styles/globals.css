@@ -29,6 +29,6 @@ table.basic thead tr td{
 }
 
 table.basic tr td {
-  @apply border border-sky-500 p-1;
+  @apply border border-sky-300 py-1 px-2;
 
 }

@@ -44,13 +44,13 @@ const Products = () => {
               products !== null && (
                 products.map(product => (
                   <tr key={product._id}>
-                    <td>{product.title}</td>
-                    <td className='flex flex-row'>
-                      <Link href={'/products/edit/' + product._id} className='bg-sky-700 py-1 px-3 rounded-lg text-white hover:bg-sky-500 flex basis-1/2 mx-2 items-center justify-center'>
+                    <td >{product.title}</td>
+                    <td className='flex'>
+                      <Link href={'/products/edit/' + product._id} className='bg-sky-700 py-1 rounded-lg text-white hover:bg-sky-500 flex w-1/2 mx-1 items-center justify-center'>
                         <HiOutlinePencilSquare size={22} />
                         Edit
                       </Link>
-                      <Link href={'/products/delete/' + product._id} className='bg-red-700 py-1 px-3 rounded-lg text-white hover:bg-red-500 flex basis-1/2 mx-2 items-center justify-center'>
+                      <Link href={'/products/delete/' + product._id} className='bg-red-700 py-1 rounded-lg text-white hover:bg-red-500 flex w-1/2 mx-1 items-center justify-center'>
                         <HiOutlineTrash size={22} />
                         Delete
                       </Link>

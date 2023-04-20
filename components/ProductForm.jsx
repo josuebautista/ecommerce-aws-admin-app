@@ -1,22 +1,34 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { HiOutlineChevronLeft, HiOutlineDocumentArrowUp } from 'react-icons/hi2';
 import { LeapFrog } from '@uiball/loaders';
 import Link from 'next/link';
+import { ReactSortable } from 'react-sortablejs';
 
-const ProductForm = ({ _id, title: existingTitle, description: existingDescription, price: existingPrice, images: existingImages }) => {
+const ProductForm = ({ _id, title: existingTitle, description: existingDescription, price: existingPrice, images: existingImages, category: existingCategory }) => {
   const router = useRouter();
   const [title, setTitle] = useState(existingTitle || '');
   const [description, setDescription] = useState(existingDescription || '');
   const [price, setPrice] = useState(existingPrice || '');
-  const [images, setImages] = useState(existingImages || [])
+  const [images, setImages] = useState(existingImages || []);
   const [goToProducts, setGoToProducts] = useState(false);
   const [upload, setUpload] = useState(false);
+  const [categories, setCategories] = useState(null);
+  const [category, setCategory] = useState(existingCategory || '');
+  const fetchCategories = () => {
+    axios.get('/api/categories').then(result => {
+      setCategories(result.data);
+    })
+  }
+  
+  useEffect(() => {
+    fetchCategories();
+  }, [])
 
   const saveProduct = async (e) => {
     e.preventDefault();
-    const data = { title, description, price, images };
+    const data = { title, description, price, images, category };
     if (_id) {
       await axios.put('/api/products', { ...data, _id });
     } else {
@@ -47,17 +59,31 @@ const ProductForm = ({ _id, title: existingTitle, description: existingDescripti
     setUpload(false);
   }
 
+  const updateImagesOrder = (images) => {
+    setImages(images);
+  }
+
   return (
     <form className='w-full'>
       {
         !_id && (
-          <Link href={'/products'} className='bg-sky-700 px-3 my-4 py-1 w-1/6 flex rounded-lg text-white hover:bg-sky-500 transition duration-200'>
-                <HiOutlineChevronLeft size={25} className='mt-1' /> <span className='text-xl '>Back</span>
+          <Link href={'/products'} className='bg-sky-900 px-3 my-4 py-1 w-1/6 flex rounded-lg text-white hover:bg-sky-700 transition duration-200'>
+            <HiOutlineChevronLeft size={25} className='mt-1' /> <span className='text-xl '>Back</span>
           </Link>
         )
       }
       <label>Product Name:</label>
       <input type='text' placeholder='Product name' value={title} onChange={(e) => setTitle(e.target.value)} />
+      <label>Category:</label>
+      <select value={category} onChange={(e) => setCategory(e.target.value)} className='my-4 py-2 px-5 rounded-lg mx-5 bg-sky-800 text-white hover:bg-sky-600 transition duration-300'>
+        <option value="" >Uncategorized</option>
+        {
+          !!categories && categories.map(category => (
+            <option value={category._id} key={category._id}>{category.name}</option>
+          ))
+        }
+      </select>
+      <br/>
       <label>Images:</label>
       <div className='w-full my-2 flex'>
 
@@ -69,13 +95,17 @@ const ProductForm = ({ _id, title: existingTitle, description: existingDescripti
             </div>
           </label>
         </div>
-        {
-          !!images?.length && images.map((link, index) => (
-            <div key={index} className='h-32 border border-sky-900 rounded-xl mx-2 overflow-hidden'>
-              <img src={link} className='rounded-xl object-center h-32 object-cover' alt={link} />
-            </div>
-          ))
-        }
+        <ReactSortable className='flex flex-wrap' list={images} setList={(e) => updateImagesOrder(e)}>
+
+          {
+            !!images?.length && images.map((link, index) => (
+              <div key={index} className='h-32 border border-sky-900 rounded-xl mx-2 overflow-hidden'>
+                <img src={link} className='rounded-xl object-center h-32 object-cover' alt={link} />
+              </div>
+            ))
+          }
+
+        </ReactSortable>
         {
           upload && (
             <div className='w-32 h-32 border bg-slate-200 border-sky-900 rounded-xl mx-2 grid content-center justify-center'>
