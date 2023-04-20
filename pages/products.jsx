@@ -5,8 +5,10 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { HiOutlinePencilSquare, HiOutlineTrash } from 'react-icons/hi2';
 import { DotSpinner } from '@uiball/loaders'
+import { useRouter } from 'next/router';
 
 const Products = () => {
+  const router = useRouter();
   const [products, setProducts] = useState(null);
   const [loading, setLoading] = useState(true)
 
@@ -18,12 +20,15 @@ const Products = () => {
     })
   }, [])
 
+  const handleNewProduct = () => {
+    router.push('/products/new');
+  }
   return (
     <Layout>
       <Title>Products</Title>
-      <Link className='bg-green-700 text-white p-2 rounded-lg hover:bg-green-500 duration-150' href={'/products/new'}>
+      <button onClick={() => handleNewProduct()} className='text-white bg-green-700 my-2 px-5 py-2 rounded-lg hover:bg-green-500 hover:scale-105 hover:-translate-y-1 transition duration-200 disabled:opacity-75'>
         Add New Product
-      </Link>
+      </button>
         {
           loading && (
             <div className='w-full h-full grid justify-center content-center'>
