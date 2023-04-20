@@ -6,7 +6,7 @@ import { LeapFrog } from '@uiball/loaders';
 import Link from 'next/link';
 import { ReactSortable } from 'react-sortablejs';
 
-const ProductForm = ({ _id, title: existingTitle, description: existingDescription, price: existingPrice, images: existingImages, category: existingCategory }) => {
+const ProductForm = ({ _id, title: existingTitle, description: existingDescription, price: existingPrice, images: existingImages, category: existingCategory, properties: existingProperties }) => {
   const router = useRouter();
   const [title, setTitle] = useState(existingTitle || '');
   const [description, setDescription] = useState(existingDescription || '');
@@ -16,19 +16,20 @@ const ProductForm = ({ _id, title: existingTitle, description: existingDescripti
   const [upload, setUpload] = useState(false);
   const [categories, setCategories] = useState(null);
   const [category, setCategory] = useState(existingCategory || '');
+  const [productProperties, setProductProperties] = useState(existingProperties || {})
   const fetchCategories = () => {
     axios.get('/api/categories').then(result => {
       setCategories(result.data);
     })
   }
-  
+
   useEffect(() => {
     fetchCategories();
   }, [])
 
   const saveProduct = async (e) => {
     e.preventDefault();
-    const data = { title, description, price, images, category };
+    const data = { title, description, price, images, category, properties: productProperties };
     if (_id) {
       await axios.put('/api/products', { ...data, _id });
     } else {
@@ -63,6 +64,24 @@ const ProductForm = ({ _id, title: existingTitle, description: existingDescripti
     setImages(images);
   }
 
+  const propertiesToFill = []
+  if (categories && category) {
+    let selectedCategoryInfo = categories.find(({ _id }) => _id === category);
+    propertiesToFill.push(...selectedCategoryInfo.properties);
+    while (selectedCategoryInfo?.parent?._id) {
+      const parentCategory = categories.find(({ _id }) => _id === selectedCategoryInfo?.parent?._id);
+      propertiesToFill.push(...parentCategory.properties);
+      selectedCategoryInfo = parentCategory;
+    }
+  }
+  const setProductProp = (name, value) => {
+    setProductProperties(prev => {
+      const newProductProps = { ...prev };
+      newProductProps[name] = value;
+      return newProductProps;
+    })
+  }
+
   return (
     <form className='w-full'>
       {
@@ -83,10 +102,28 @@ const ProductForm = ({ _id, title: existingTitle, description: existingDescripti
           ))
         }
       </select>
-      <br/>
+      {propertiesToFill.length > 0 && propertiesToFill.map((p, index) => (
+        <div key={index} className='my-4 py-2'>
+          <label className='' >{p.name.charAt(0).toUpperCase() + p.name.slice(1)}: </label>
+          <select value={productProperties[p.name]} onChange={(e) => setProductProp(p.name, e.target.value)} className='py-2 px-5 rounded-lg mx-5 bg-sky-800 text-white hover:bg-sky-600 transition duration-300'>
+            {p.values && p.values.map(v => (
+              <option value={v}>{v}</option>
+            ))}
+          </select>
+        </div>
+      ))}
+      <br />
       <label>Images:</label>
-      <div className='w-full my-2 flex'>
-
+      <div className='w-full my-2 flex flex-wrap gap-2'>
+        <ReactSortable className='flex flex-wrap gap-2' list={images} setList={(e) => updateImagesOrder(e)}>
+          {
+            !!images?.length && images.map((link, index) => (
+              <div key={index} className='h-32 border border-sky-900 rounded-xl overflow-hidden'>
+                <img src={link} className='rounded-xl object-center h-32 object-cover' alt={link} />
+              </div>
+            ))
+          }
+        </ReactSortable>
         <div className='w-32 h-32 border border-sky-900 rounded-xl bg-slate-100'>
           <label>
             <div className='w-full h-full grid justify-center items-center hover:scale-105 hover:-translate-y-1 hover:text-black/50 duration-200'>
@@ -95,17 +132,6 @@ const ProductForm = ({ _id, title: existingTitle, description: existingDescripti
             </div>
           </label>
         </div>
-        <ReactSortable className='flex flex-wrap' list={images} setList={(e) => updateImagesOrder(e)}>
-
-          {
-            !!images?.length && images.map((link, index) => (
-              <div key={index} className='h-32 border border-sky-900 rounded-xl mx-2 overflow-hidden'>
-                <img src={link} className='rounded-xl object-center h-32 object-cover' alt={link} />
-              </div>
-            ))
-          }
-
-        </ReactSortable>
         {
           upload && (
             <div className='w-32 h-32 border bg-slate-200 border-sky-900 rounded-xl mx-2 grid content-center justify-center'>

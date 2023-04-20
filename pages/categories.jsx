@@ -33,7 +33,12 @@ const Categories = () => {
     e.preventDefault();
     setDisable(true)
     setSending(true);
-    const data = { name, parent };
+    console.log({properties})
+    const data = {
+      name,
+      parent,
+      properties: properties.map(prop => ({ name: prop.name, values: prop.values.replace(/ /g, '').split(',') }))
+    };
     if (editedCategory !== null) {
       data._id = editedCategory._id
       await axios.put('/api/categories', data);
@@ -42,6 +47,7 @@ const Categories = () => {
     }
     setName('');
     setEditedCategory(null);
+    setProperties([])
     setSending(false);
     setDisable(false);
     setShowForm(false);
@@ -52,6 +58,11 @@ const Categories = () => {
     setEditedCategory(category);
     setName(category.name);
     setParent(category.parent?._id || '');
+    setProperties(
+      category.properties.map(({name, values}) => ({
+        name,
+        values: values.join(', ')
+      })) || [])
   }
 
   const deleteCategory = (category) => {
@@ -83,7 +94,7 @@ const Categories = () => {
       return [...prev, { name: '', values: '' }]
     })
   }
-  
+
   const handleForm = () => {
     setShowForm(true);
   }

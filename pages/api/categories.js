@@ -8,14 +8,22 @@ const handle = async (req, res) => {
   await mongooseConnect();
 
   if (method === 'POST') {
-    const { name, parent } = req.body;
-    const categoryDoc = await Category.create({ name, parent });
+    const { name, parent, properties } = req.body;
+    const categoryDoc = await Category.create(
+      {
+        name,
+        parent: parent || undefined,
+        properties,
+      }
+    );
     res.json(categoryDoc);
   }
 
   if (method === 'PUT') {
-    const { name, parent, _id } = req.body;
-    const categoryDoc = await Category.updateOne({ _id }, { name, parent });
+    const { name, parent, _id, properties } = req.body;
+    const categoryDoc = await Category.updateOne(
+      { _id }, { name, parent: parent || undefined, properties }
+    );
     res.json(categoryDoc);
   }
 
@@ -24,8 +32,8 @@ const handle = async (req, res) => {
   }
 
   if (method === 'DELETE') {
-    if (req.query?.id){
-      await Category.deleteOne({_id: req.query?.id});
+    if (req.query?.id) {
+      await Category.deleteOne({ _id: req.query?.id });
       res.json(true)
     }
   }

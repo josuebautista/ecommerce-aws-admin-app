@@ -12,7 +12,7 @@ const Layout = ({children}) => {
             <div className="w-1/3 xl:w-1/4 md:w-1/3 sm:w-1/3  h-full">
               <Nav/>
             </div>
-            <div className="w-2/3 xl:w-3/4 md:w-2/3 bg-sky-50 my-3 mr-2 rounded-3xl p-4 h-full">
+            <div className="w-2/3 xl:w-3/4 md:w-2/3 bg-sky-50 my-3 mr-2 rounded-3xl p-4 h-full overflow-y-auto ">
               {children}
             </div>
           </div>
