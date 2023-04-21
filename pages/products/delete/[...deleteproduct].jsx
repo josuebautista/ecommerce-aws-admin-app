@@ -7,16 +7,14 @@ const DeleteProduct = () => {
   const router = useRouter();
   const [productInfo, setProductInfo] = useState(null)
   const { deleteproduct } = router.query;
-  console.log(deleteproduct[0])
-  const [id, setId] = useState(deleteproduct[0] || null)
   useEffect(() => {
-    if(id === null){
+    if(deleteproduct === null){
       return;
     }
-    axios.get('/api/products?id=' + id).then(response => {
+    axios.get('/api/products?id=' + deleteproduct).then(response => {
       setProductInfo(response.data)
     })
-  }, [id])
+  }, [deleteproduct])
 
   const deleteProduct = async () => {
     await axios.delete('/api/products?id=' + id);
