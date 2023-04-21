@@ -46,12 +46,12 @@ const Products = () => {
               products.map(product => (
                 <tr key={product._id}>
                   <td >{product.title}</td>
-                  <td className='flex'>
-                    <Link href={'/products/edit/' + product._id} className='bg-sky-700 py-1 rounded-lg text-white hover:bg-sky-500 flex w-1/2 mx-1 items-center justify-center'>
+                  <td className='flex flex-row md:flex-row sm:flex-col'>
+                    <Link href={'/products/edit/' + product._id} className='bg-sky-700 py-1 sm:my-1 rounded-lg text-white hover:bg-sky-500 flex w-1/2 sm:w-full mx-1 items-center justify-center'>
                       <HiOutlinePencilSquare size={22} />
                       Edit
                     </Link>
-                    <Link href={'/products/delete/' + product._id} className='bg-red-700 py-1 rounded-lg text-white hover:bg-red-500 flex w-1/2 mx-1 items-center justify-center'>
+                    <Link href={'/products/delete/' + product._id} className='bg-red-700 py-1 sm:my-1 rounded-lg text-white hover:bg-red-500 flex w-1/2 sm:w-full mx-1 items-center justify-center'>
                       <HiOutlineTrash size={22} />
                       Delete
                     </Link>

@@ -185,7 +185,7 @@ const Categories = () => {
           </form>
         </>
       ) : (
-        <button onClick={() => handleForm()} className='text-white bg-green-700 my-2 px-5 py-2 rounded-lg hover:bg-green-500 hover:scale-105 hover:-translate-y-1 transition duration-200 disabled:opacity-75'>New Category</button>
+        <button onClick={() => handleForm()} className='text-white bg-green-700 my-2 px-5 py-2 rounded-lg hover:bg-green-500 hover:scale-105 hover:-translate-y-1 transition duration-200 disabled:opacity-75 '>New Category</button>
       )
       }
       {loading && (
@@ -208,9 +208,9 @@ const Categories = () => {
                 <tr key={category._id}>
                   <td>{category.name}</td>
                   <td>{category?.parent?.name}</td>
-                  <td className='flex justify-between'>
-                    <button onClick={() => editCategory(category)} className='w-1/2 px-1 py-1 mx-1 text-white bg-sky-700 rounded-lg hover:bg-sky-500 flex justify-center'><HiOutlinePencilSquare size={22} />Edit</button>
-                    <button onClick={() => deleteCategory(category)} className='w-1/2 px-1 py-1 mx-1 text-white bg-red-700 rounded-lg hover:bg-red-500 flex justify-center'><HiOutlineTrash size={22} />Delete</button>
+                  <td className='flex justify-between flex-row md:flex-row sm:flex-col'>
+                    <button onClick={() => editCategory(category)} className='w-1/2 sm:w-full px-1 py-1 sm:my-1  mx-1 text-white bg-sky-700 rounded-lg hover:bg-sky-500 flex justify-center'><HiOutlinePencilSquare size={22} />Edit</button>
+                    <button onClick={() => deleteCategory(category)} className='w-1/2 sm:w-full px-1 py-1 sm:my-1  mx-1 text-white bg-red-700 rounded-lg hover:bg-red-500 flex justify-center'><HiOutlineTrash size={22} />Delete</button>
                   </td>
                 </tr>
               ))}

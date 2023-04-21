@@ -1,20 +1,37 @@
+import { useState } from "react";
 import { Nav } from "./Nav";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { useGlobalContext } from "@/utils/Context";
 
-const Layout = ({children}) => {
+const Layout = ({ children }) => {
   const { data: session } = useSession();
+  const {showNavigation, handleNav} = useGlobalContext();
 
   return (
     <>
       {
         session ? (
           <div className="bg-sky-900 h-screen w-screen flex overflow-hidden">
-            <div className="w-1/3 xl:w-1/4 md:w-1/3 sm:w-1/3  h-full">
-              <Nav/>
-            </div>
-            <div className="w-2/3 xl:w-3/4 md:w-2/3 bg-sky-50 my-3 mr-2 rounded-3xl p-4 h-full overflow-y-auto ">
-              {children}
-            </div>
+            {showNavigation ? (
+              <>
+                <div className="w-1/3 xl:w-1/4 md:w-1/3 sm:w-1/3  h-full">
+                  <Nav show={handleNav} showValue={showNavigation} />
+                </div>
+                <div className="w-2/3 xl:w-3/4 md:w-2/3 bg-sky-50 my-3 mr-2 rounded-3xl p-4 h-full overflow-y-auto ">
+                  {children}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="w-1/12 xl:w-1/4 md:w-1/12 sm:w-1/3  h-full">
+                  <Nav show={handleNav} showValue={showNavigation} />
+                </div>
+                <div className="w-11/12 xl:w-3/4 md:w-11/12 bg-sky-50 my-3 mr-2 rounded-3xl p-4 h-full overflow-y-auto ">
+                  {children}
+                </div>
+
+              </>
+            )}
           </div>
         ) : (
           <div className="bg-sky-900 h-screen w-screen flex items-center justify-center">
@@ -29,4 +46,4 @@ const Layout = ({children}) => {
   )
 
 }
-  export default Layout;
+export default Layout;

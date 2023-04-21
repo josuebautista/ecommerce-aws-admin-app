@@ -1,11 +1,14 @@
 import { mongooseConnect } from "@/lib/mongoose";
 import { MongoAPIError } from "mongodb";
+import { getServerSession } from "next-auth";
+import { authConfig, isAdminRequest } from "./auth/[...nextauth]";
 
 const { Category } = require("@/models/Category");
 
 const handle = async (req, res) => {
   const { method } = req;
   await mongooseConnect();
+  await isAdminRequest(req, res);
 
   if (method === 'POST') {
     const { name, parent, properties } = req.body;

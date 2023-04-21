@@ -86,7 +86,7 @@ const ProductForm = ({ _id, title: existingTitle, description: existingDescripti
     <form className='w-full'>
       {
         !_id && (
-          <Link href={'/products'} className='bg-sky-900 px-3 my-4 py-1 w-1/6 flex rounded-lg text-white hover:bg-sky-700 transition duration-200'>
+          <Link href={'/products'} className='bg-sky-900 px-3 my-4 py-1 md:1/6 xl:w-1/6 sm:w-1/3 justify-center flex rounded-lg text-white hover:bg-sky-700 transition duration-200'>
             <HiOutlineChevronLeft size={25} className='mt-1' /> <span className='text-xl '>Back</span>
           </Link>
         )
