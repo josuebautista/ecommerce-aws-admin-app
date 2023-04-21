@@ -5,6 +5,7 @@ import { HiOutlineChevronLeft, HiOutlineDocumentArrowUp } from 'react-icons/hi2'
 import { LeapFrog } from '@uiball/loaders';
 import Link from 'next/link';
 import { ReactSortable } from 'react-sortablejs';
+import Title from './Title';
 
 const ProductForm = ({ _id, title: existingTitle, description: existingDescription, price: existingPrice, images: existingImages, category: existingCategory, properties: existingProperties }) => {
   const router = useRouter();
@@ -16,9 +17,10 @@ const ProductForm = ({ _id, title: existingTitle, description: existingDescripti
   const [upload, setUpload] = useState(false);
   const [categories, setCategories] = useState(null);
   const [category, setCategory] = useState(existingCategory || '');
-  const [productProperties, setProductProperties] = useState(existingProperties || {})
-  const fetchCategories = () => {
-    axios.get('/api/categories').then(result => {
+  const [productProperties, setProductProperties] = useState(existingProperties || {});
+
+  const fetchCategories = async () => {
+    await axios.get('/api/categories').then(result => {
       setCategories(result.data);
     })
   }
@@ -36,10 +38,6 @@ const ProductForm = ({ _id, title: existingTitle, description: existingDescripti
       await axios.post('/api/products', data);
     }
     setGoToProducts(true);
-  }
-
-  if (goToProducts) {
-    router.push('/products')
   }
 
   const uploadImages = async (e) => {
@@ -82,30 +80,34 @@ const ProductForm = ({ _id, title: existingTitle, description: existingDescripti
     })
   }
 
+  const cancelForm = (e) => {
+    e.preventDefault();
+    setGoToProducts(true);
+  }
+
+  if (goToProducts) {
+    router.push('/products')
+  }
+
   return (
     <form className='w-full'>
-      {
-        !_id && (
-          <Link href={'/products'} className='bg-sky-900 px-3 my-4 py-1 md:1/6 xl:w-1/6 sm:w-1/3 justify-center flex rounded-lg text-white hover:bg-sky-700 transition duration-200'>
-            <HiOutlineChevronLeft size={25} className='mt-1' /> <span className='text-xl '>Back</span>
-          </Link>
-        )
-      }
+      <Title>Products</Title>
       <label>Product Name:</label>
       <input type='text' placeholder='Product name' value={title} onChange={(e) => setTitle(e.target.value)} />
-      <label>Category:</label>
-      <select value={category} onChange={(e) => setCategory(e.target.value)} className='my-4 py-2 px-5 rounded-lg mx-5 bg-sky-800 text-white hover:bg-sky-600 transition duration-300'>
-        <option value="" >Uncategorized</option>
-        {
-          !!categories && categories.map(category => (
+      <div className='flex my-4'>
+        <label >Category:</label>
+        <select value={category} onChange={(e) => setCategory(e.target.value)} className='py-2 w-full px-10 rounded-lg ml-5 bg-sky-800 text-white hover:bg-sky-600 transition duration-300'>
+          <option value="">Uncategorized</option>
+          {!!categories && categories.map(category => (
             <option value={category._id} key={category._id}>{category.name}</option>
-          ))
-        }
-      </select>
+          ))}
+        </select>
+      </div>
+
       {propertiesToFill.length > 0 && propertiesToFill.map((p, index) => (
-        <div key={index} className='my-4 py-2'>
+        <div key={index} className='my-4 flex'>
           <label className='' >{p.name.charAt(0).toUpperCase() + p.name.slice(1)}: </label>
-          <select value={productProperties[p.name]} onChange={(e) => setProductProp(p.name, e.target.value)} className='py-2 px-5 rounded-lg mx-5 bg-sky-800 text-white hover:bg-sky-600 transition duration-300'>
+          <select value={productProperties[p.name]} onChange={(e) => setProductProp(p.name, e.target.value)} className='py-2 px-10 w-full rounded-lg ml-5 bg-sky-800 text-white hover:bg-sky-600 transition duration-300'>
             {p.values && p.values.map(v => (
               <option value={v}>{v}</option>
             ))}
@@ -114,8 +116,8 @@ const ProductForm = ({ _id, title: existingTitle, description: existingDescripti
       ))}
       <br />
       <label>Images:</label>
-      <div className='w-full my-2 flex flex-wrap gap-2'>
-        <ReactSortable className='flex flex-wrap gap-2' list={images} setList={(e) => updateImagesOrder(e)}>
+      <div className='w-full my-2 flex flex-grow gap-2'>
+        <ReactSortable className='flex flex-grow gap-2' list={images} setList={(e) => updateImagesOrder(e)}>
           {
             !!images?.length && images.map((link, index) => (
               <div key={index} className='h-32 border border-sky-900 rounded-xl overflow-hidden'>
@@ -141,7 +143,7 @@ const ProductForm = ({ _id, title: existingTitle, description: existingDescripti
         }
         {
           !!images?.length || !upload && (
-            <div className='py-2 h-32 grid content-center px-5'>No photos in this product</div>
+            <div className='py-2 h-32 grid content-center px-5 text-2xl text-sky-900/50'>No photos in this product</div>
           )
         }
       </div>
@@ -150,14 +152,16 @@ const ProductForm = ({ _id, title: existingTitle, description: existingDescripti
       <label>Price (USD):</label>
       <input type='number' placeholder='Price' step={0.01} value={price} onChange={(e) => setPrice(e.target.value)} />
 
-      {
-        _id ? (
-          <button className='btn btn-primary ' type='submit' onClick={(e) => saveProduct(e)}>Save</button>
-        ) : (
-          <button className='btn btn-primary ' type='submit' onClick={(e) => saveProduct(e)}>Submit</button>
-        )
-      }
-
+      <div className='w-full flex justify-center gap-4'>
+        <button type='button' onClick={(e) => cancelForm(e)} className='btn btn-secondary xl:w-1/12 lg:w-2/12 md:w-1/6 sm:w-1/3'>Cancel</button>
+        {
+          _id ? (
+            <button className='btn btn-primary xl:w-1/12 lg:w-2/12 md:w-1/6 sm:w-1/3' type='submit' onClick={(e) => saveProduct(e)}>Save</button>
+          ) : (
+            <button className='btn btn-primary xl:w-1/12 lg:w-2/12 md:w-1/6 sm:w-1/3' type='submit' onClick={(e) => saveProduct(e)}>Submit</button>
+          )
+        }
+      </div>
     </form>
   )
 }

@@ -33,7 +33,7 @@ const Products = () => {
             <DotSpinner size={60} color='#0C4A6E' />
           </div>
       )}
-      <div className='w-full h-full my-5 overflow-y-auto'>
+      <div className='w-full h-full my-5 pb-5'>
         <table className='basic'>
           <thead>
             <tr>
@@ -46,12 +46,12 @@ const Products = () => {
               products.map(product => (
                 <tr key={product._id}>
                   <td >{product.title}</td>
-                  <td className='flex flex-row md:flex-row sm:flex-col'>
-                    <Link href={'/products/edit/' + product._id} className='bg-sky-700 py-1 sm:my-1 rounded-lg text-white hover:bg-sky-500 flex w-1/2 sm:w-full mx-1 items-center justify-center'>
+                  <td className='flex xl:flex-row lg:flex-row md:flex-row sm:flex-col flex-col'>
+                    <Link href={'/products/edit/' + product._id} className='bg-sky-700 py-1 rounded-lg text-white hover:bg-sky-500 flex xl:w-1/2 lg:w-1/2 md:w-1/2 sm:w-full w-full m-1 items-center justify-center'>
                       <HiOutlinePencilSquare size={22} />
                       Edit
                     </Link>
-                    <Link href={'/products/delete/' + product._id} className='bg-red-700 py-1 sm:my-1 rounded-lg text-white hover:bg-red-500 flex w-1/2 sm:w-full mx-1 items-center justify-center'>
+                    <Link href={'/products/delete/' + product._id} className='bg-red-700 py-1 rounded-lg text-white hover:bg-red-500 flex xl:w-1/2 lg:w-1/2 md:w-1/2 sm:w-full w-full m-1 items-center justify-center'>
                       <HiOutlineTrash size={22} />
                       Delete
                     </Link>
@@ -61,7 +61,6 @@ const Products = () => {
             )}
           </tbody>
         </table>
-
       </div>
     </Layout>
   )

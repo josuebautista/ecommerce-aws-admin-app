@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 const AppContext = React.createContext();
 
 const AppProvider = ({children}) => {
-  const [showNavigation, setShowNavigation] = useState(true);
+  const [showNavigation, setShowNavigation] = useState(false);
 
   const handleNav = () => {
     setShowNavigation(!showNavigation)

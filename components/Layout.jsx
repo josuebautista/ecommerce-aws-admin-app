@@ -1,36 +1,36 @@
 import { useState } from "react";
 import { Nav } from "./Nav";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { useGlobalContext } from "@/utils/Context";
 
 const Layout = ({ children }) => {
   const { data: session } = useSession();
-  const {showNavigation, handleNav} = useGlobalContext();
+  const { showNavigation} = useGlobalContext();
 
   return (
-    <>
+    <div className="w-screen h-screen">
       {
         session ? (
-          <div className="bg-sky-900 h-screen w-screen flex overflow-hidden">
+          <div className="bg-sky-900 h-screen w-screen overflow-hidden">
             {showNavigation ? (
-              <>
-                <div className="w-1/3 xl:w-1/4 md:w-1/3 sm:w-1/3  h-full">
-                  <Nav show={handleNav} showValue={showNavigation} />
+              <div className="w-full h-full flex">
+                <div className="xl:w-1/4 lg:w-1/4 md:w-1/3 sm:w-2/3 h-full">
+                  <Nav/>
                 </div>
-                <div className="w-2/3 xl:w-3/4 md:w-2/3 bg-sky-50 my-3 mr-2 rounded-3xl p-4 h-full overflow-y-auto ">
+                <div className="xl:w-3/4 lg:w-3/4 md:w-2/3 sm:w-1/3 bg-sky-50 my-3 mr-2 rounded-3xl p-4 h-full overflow-y-auto ">
                   {children}
                 </div>
-              </>
+              </div>
             ) : (
-              <>
-                <div className="w-1/12 xl:w-1/4 md:w-1/12 sm:w-1/3  h-full">
-                  <Nav show={handleNav} showValue={showNavigation} />
+              <div className="w-full h-full flex">
+                <div className="xl:w-1/12 lg:w-1/12 md:w-1/12 w-2/12 h-full">
+                  <Nav/>
                 </div>
-                <div className="w-11/12 xl:w-3/4 md:w-11/12 bg-sky-50 my-3 mr-2 rounded-3xl p-4 h-full overflow-y-auto ">
+                <div className="xl:w-11/12 lg:w-11/12 md:w-11/12 w-10/12 bg-sky-50 my-3 mr-2 rounded-3xl p-4 h-full overflow-y-auto ">
                   {children}
                 </div>
 
-              </>
+              </div>
             )}
           </div>
         ) : (
@@ -42,7 +42,7 @@ const Layout = ({ children }) => {
           </div>
         )
       }
-    </>
+    </div>
   )
 
 }
