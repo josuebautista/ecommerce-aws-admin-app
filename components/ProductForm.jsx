@@ -108,8 +108,8 @@ const ProductForm = ({ _id, title: existingTitle, description: existingDescripti
         <div key={index} className='my-4 flex'>
           <label className='' >{p.name.charAt(0).toUpperCase() + p.name.slice(1)}: </label>
           <select value={productProperties[p.name]} onChange={(e) => setProductProp(p.name, e.target.value)} className='py-2 px-10 w-full rounded-lg ml-5 bg-sky-800 text-white hover:bg-sky-600 transition duration-300'>
-            {p.values && p.values.map(v => (
-              <option value={v}>{v}</option>
+            {p.values && p.values.map((v, index) => (
+              <option key={index} value={v}>{v}</option>
             ))}
           </select>
         </div>

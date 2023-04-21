@@ -21,7 +21,7 @@ const EditProductPage = () => {
       //console.log(response.data)
       setProductInfo(response.data)
     });
-  }, [editproduct]);
+  }, [id]);
 
   return (
     <Layout>
