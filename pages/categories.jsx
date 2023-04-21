@@ -200,7 +200,7 @@ const Categories = () => {
           <DotSpinner size={60} color='#0C4A6E' />
         </div>
       )}
-      {!showForm && (
+      {!(showForm || loading) && (
         <div className='w-full h-full overflow-y-auto my-2 '>
           <table className='basic'>
             <thead>
