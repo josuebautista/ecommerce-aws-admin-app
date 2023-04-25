@@ -1,11 +1,82 @@
+import React, { useEffect, useState } from 'react'
 import Layout from '@/components/Layout';
 import Title from '@/components/Title';
-import React from 'react'
+import axios from 'axios';
+import { DotSpinner } from '@uiball/loaders'
 
 const Orders = () => {
+  const [orders, setOrders] = useState(null);
+  const [loading, setLoading] = useState(false)
+
+  const getOrders = async () => {
+    setLoading(true);
+    await axios.get('/api/orders').then(response => {
+      setOrders(response.data);
+    })
+    console.log(orders);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    getOrders();
+  }, [])
+
   return (
     <Layout>
       <Title>Orders</Title>
+      <div className='w-full h-full my-5'>
+        {loading ? (
+          <div className='grid place-content-center h-full'>
+            <DotSpinner size={60} color='#0C4A6E' />
+          </div>
+        ) : (
+          <table className='w-full'>
+            <thead>
+              <tr className='font-semibold text-xl'>
+                <td className='py-5 text-center'>Date</td>
+                <td className='py-5'>Recipient</td>
+                <td className='py-5'>Products</td>
+              </tr>
+            </thead>
+            <tbody>
+              {orders !== null && orders.map(order => (
+                <tr key={order._id} className='border-t'>
+                  <td className='text-center'>
+                    <div>
+                      {order.createdAt.replace('T', ' ').split('.')[0].split(' ')[0]}
+                    </div>
+                    <div>
+                      {order.createdAt.replace('T', ' ').split('.')[0].split(' ')[1]}
+                    </div>
+                  </td>
+                  <td className='flex flex-col'>
+                    <div>
+                      {order.name}
+                    </div>
+                    <div>
+                      {order.email}
+                    </div>
+                    <div>
+                      {order.streetAddress}, {order.city}, {order.country}
+                    </div>
+                    <div>
+                      {order.postalCode}
+                    </div>
+                  </td>
+                  <td className=''>
+                    {order.line_items.map((item, index) => (
+                      <div key={index}>
+                        <span className='font-semibold'>{item.price_data.product_data.name}</span> x {item.quantity}
+                      </div>
+
+                    ))}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </Layout>
   )
 }
