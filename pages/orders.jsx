@@ -24,18 +24,19 @@ const Orders = () => {
   return (
     <Layout>
       <Title>Orders</Title>
-      <div className='w-full h-full my-5'>
+      <div className='w-full h-full my-5 overflow-x-auto'>
         {loading ? (
           <div className='grid place-content-center h-full'>
             <DotSpinner size={60} color='#0C4A6E' />
           </div>
         ) : (
-          <table className='w-full'>
-            <thead>
+          <table className='w-full '>
+            <thead className='bg-sky-100'>
               <tr className='font-semibold text-xl'>
-                <td className='py-5 text-center'>Date</td>
-                <td className='py-5'>Recipient</td>
-                <td className='py-5'>Products</td>
+                <td className='py-5 text-center'>DATE</td>
+                <td className='py-5 text-center'>PAID</td>
+                <td className='py-5'>RECIPIENT</td>
+                <td className='py-5'>PRODUCTS</td>
               </tr>
             </thead>
             <tbody>
@@ -43,10 +44,19 @@ const Orders = () => {
                 <tr key={order._id} className='border-t'>
                   <td className='text-center'>
                     <div>
-                      {order.createdAt.replace('T', ' ').split('.')[0].split(' ')[0]}
+                      {order.createdAt.replace('T', ' ').replace('-', '/').replace('-', '/').split('.')[0].split(' ')[0]}
                     </div>
                     <div>
                       {order.createdAt.replace('T', ' ').split('.')[0].split(' ')[1]}
+                    </div>
+                  </td>
+                  <td>
+                    <div className='px-10 text-center font-bold'>
+                      {order.paid ? (
+                        <p className='text-green-500'>Yes</p>
+                      ) : (
+                        <p className='text-red-500'>No</p>
+                      )}
                     </div>
                   </td>
                   <td className='flex flex-col'>
@@ -68,7 +78,6 @@ const Orders = () => {
                       <div key={index}>
                         <span className='font-semibold'>{item.price_data.product_data.name}</span> x {item.quantity}
                       </div>
-
                     ))}
                   </td>
                 </tr>

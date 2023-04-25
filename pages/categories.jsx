@@ -202,20 +202,20 @@ const Categories = () => {
       )}
       {!(showForm || loading) && (
         <div className='w-full h-full overflow-y-auto my-2 '>
-          <table className='basic'>
-            <thead>
-              <tr>
-                <td>Category Name</td>
-                <td>Parent Category</td>
+          <table className='w-full'>
+            <thead className='bg-sky-100'>
+              <tr className='font-semibold text-xl'>
+                <td className='py-5'>Category Name</td>
+                <td className='py-5'>Parent Category</td>
                 <td></td>
               </tr>
             </thead>
             <tbody>
               {!!categories && categories.map(category => (
-                <tr key={category._id}>
-                  <td>{category.name}</td>
-                  <td>{category?.parent?.name}</td>
-                  <td className='flex xl:flex-row lg:flex-row md:flex-row sm:flex-col flex-col'>
+                <tr key={category._id} className='border-t'>
+                  <td className='py-4'>{category.name}</td>
+                  <td className='py-4'>{category?.parent?.name}</td>
+                  <td className='flex xl:flex-row lg:flex-row md:flex-row sm:flex-col flex-col py-2'>
                     <button onClick={() => editCategory(category)} className='xl:w-1/2 lg:w-1/2 md:w-1/2 sm:w-full w-full py-1  m-1 text-white bg-sky-700 rounded-lg hover:bg-sky-500 flex justify-center'><HiOutlinePencilSquare size={22} />Edit</button>
                     <button onClick={() => deleteCategory(category)} className='xl:w-1/2 lg:w-1/2 md:w-1/2 sm:w-full w-full py-1  m-1 text-white bg-red-700 rounded-lg hover:bg-red-500 flex justify-center'><HiOutlineTrash size={22} />Delete</button>
                   </td>

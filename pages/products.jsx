@@ -34,25 +34,25 @@ const Products = () => {
           </div>
       )}
       <div className='w-full h-full my-5 pb-5'>
-        <table className='basic'>
-          <thead>
+        <table className='w-full'>
+          <thead className='bg-sky-100'>
             <tr>
-              <td>Product Name</td>
+              <td className='font-semibold text-xl py-5'>Product Name</td>
               <td></td>
             </tr>
           </thead>
           <tbody>
             {products !== null && (
               products.map(product => (
-                <tr key={product._id}>
-                  <td >{product.title}</td>
-                  <td className='flex xl:flex-row lg:flex-row md:flex-row sm:flex-col flex-col'>
+                <tr key={product._id} className='border-t'>
+                  <td className='py-4'>{product.title}</td>
+                  <td className='flex xl:flex-row lg:flex-row md:flex-row sm:flex-col flex-col py-2'>
                     <Link href={'/products/edit/' + product._id} className='bg-sky-700 py-1 rounded-lg text-white hover:bg-sky-500 flex xl:w-1/2 lg:w-1/2 md:w-1/2 sm:w-full w-full m-1 items-center justify-center'>
-                      <HiOutlinePencilSquare size={22} />
+                      <HiOutlinePencilSquare size={25} />
                       Edit
                     </Link>
                     <Link href={'/products/delete/' + product._id} className='bg-red-700 py-1 rounded-lg text-white hover:bg-red-500 flex xl:w-1/2 lg:w-1/2 md:w-1/2 sm:w-full w-full m-1 items-center justify-center'>
-                      <HiOutlineTrash size={22} />
+                      <HiOutlineTrash size={25} />
                       Delete
                     </Link>
                   </td>
